@@ -5,6 +5,7 @@ import {
   notificationChange,
   removeNotification,
 } from "../reducers/notificationReducer";
+import { createNew } from "../services/anecdotes";
 
 const AnecdoteForm = () => {
   const [anecdote, setAnecdote] = useState("");
@@ -23,9 +24,11 @@ const AnecdoteForm = () => {
           />
         </div>
         <button
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
-            dispatch(createAnecdote(anecdote));
+            const newAnecdote = await createNew(anecdote);
+
+            dispatch(createAnecdote(newAnecdote));
             dispatch(notificationChange(`You created '${anecdote}'`));
 
             setTimeout(() => {
