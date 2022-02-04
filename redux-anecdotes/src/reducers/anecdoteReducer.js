@@ -1,4 +1,4 @@
-const getId = () => (100000 * Math.random()).toFixed(0);
+import { createNew, getAll, update } from "../services/anecdotes";
 
 const initialState = [];
 
@@ -7,9 +7,14 @@ const reducer = (state = initialState, action) => {
     case "CREATE_NEW":
       return [...state, action.payload];
     case "ADD_VOTE":
-      return state.map((anec) =>
-        anec.id === action.payload ? { ...anec, votes: anec.votes + 1 } : anec
-      );
+      return state.map((anec) => {
+        if (anec.id === action.payload) {
+          console.log(anec.votes);
+        }
+        return anec.id === action.payload
+          ? { ...anec, votes: Number(anec.votes) + 1 }
+          : anec;
+      });
     case "GET_ALL":
       return action.payload;
     default:
@@ -18,21 +23,21 @@ const reducer = (state = initialState, action) => {
 };
 
 export const createAnecdote = (content) => {
-  return {
-    type: "CREATE_NEW",
-    payload: content,
+  return async (dispatch) => {
+    const newAnecdote = await createNew(content);
+    dispatch({ type: "CREATE_NEW", payload: newAnecdote });
   };
 };
-export const getAllAnecdotes = (anecdotes) => {
-  return {
-    type: "GET_ALL",
-    payload: anecdotes,
+export const getAllAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await getAll();
+    dispatch({ type: "GET_ALL", payload: anecdotes });
   };
 };
-export const addVote = (id) => {
-  return {
-    type: "ADD_VOTE",
-    payload: id,
+export const addVote = (anecdote) => {
+  return async (dispatch) => {
+    const updateAnec = await update(anecdote);
+    dispatch({ type: "ADD_VOTE", payload: updateAnec.id });
   };
 };
 export default reducer;

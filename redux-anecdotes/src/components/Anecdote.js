@@ -2,11 +2,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addVote } from "../reducers/anecdoteReducer";
 import {
-  notificationChange,
+  setNotification,
   removeNotification,
 } from "../reducers/notificationReducer";
 
 const Anecdote = ({ anecdote }) => {
+  const dispatch = useDispatch();
   const style = {
     marginBottom: "1rem",
     borderBottom: "1px solid black",
@@ -16,21 +17,17 @@ const Anecdote = ({ anecdote }) => {
     marginTop: 5,
     marginLeft: 5,
   };
-  const dispatch = useDispatch();
-  const vote = (id) => {
-    dispatch(addVote(id));
-    dispatch(notificationChange(`You voted '${anecdote.content}'`));
 
-    setTimeout(() => {
-      dispatch(removeNotification());
-    }, 5000);
+  const vote = (anecdote) => {
+    dispatch(addVote(anecdote));
+    dispatch(setNotification(`You voted '${anecdote.content}'`, 5));
   };
   return (
     <div style={style}>
       <div>{anecdote.content}</div>
       <div>
         has {anecdote.votes}
-        <button style={styleButton} onClick={() => vote(anecdote.id)}>
+        <button style={styleButton} onClick={() => vote(anecdote)}>
           vote
         </button>
       </div>

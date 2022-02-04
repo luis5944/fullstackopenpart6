@@ -5,15 +5,12 @@ import AnecdoteList from "./components/AnecdoteList";
 import Filter from "./components/Filter";
 import Notification from "./components/Notification";
 import { getAllAnecdotes } from "./reducers/anecdoteReducer";
-import { getAll } from "./services/anecdotes";
 
 const App = () => {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-    getAll().then((anecdotes) => {
-      dispatch(getAllAnecdotes(anecdotes));
-    });
+    dispatch(getAllAnecdotes());
   }, [dispatch]);
 
   return (

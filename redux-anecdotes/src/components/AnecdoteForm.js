@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import {
-  notificationChange,
+  setNotification,
   removeNotification,
 } from "../reducers/notificationReducer";
-import { createNew } from "../services/anecdotes";
 
 const AnecdoteForm = () => {
   const [anecdote, setAnecdote] = useState("");
@@ -26,14 +25,9 @@ const AnecdoteForm = () => {
         <button
           onClick={async (e) => {
             e.preventDefault();
-            const newAnecdote = await createNew(anecdote);
 
-            dispatch(createAnecdote(newAnecdote));
-            dispatch(notificationChange(`You created '${anecdote}'`));
-
-            setTimeout(() => {
-              dispatch(removeNotification());
-            }, 5000);
+            dispatch(createAnecdote(anecdote));
+            dispatch(setNotification(`You created '${anecdote}'`, 5));
           }}
         >
           create

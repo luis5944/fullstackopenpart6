@@ -12,3 +12,12 @@ export const createNew = async (content) => {
   const response = await axios.post(baseUrl, anecdote);
   return response.data;
 };
+
+export const update = async (anecdote) => {
+  const anecdoteUpdate = { ...anecdote, votes: anecdote.votes + 1 };
+  const response = await axios.put(
+    `${baseUrl}/${anecdoteUpdate.id}`,
+    anecdoteUpdate
+  );
+  return response.data;
+};
