@@ -15,7 +15,7 @@ export const setNotification = (notification, seconds) => {
   return (dispatch) => {
     dispatch({ type: "SET_NOTIFICATION", notification });
 
-    setTimeout(() => {
+    setTimeout(function () {
       dispatch(removeNotification());
     }, seconds * 1000);
   };

@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { createAnecdote } from "../reducers/anecdoteReducer";
-import {
-  setNotification,
-  removeNotification,
-} from "../reducers/notificationReducer";
+import { setNotification } from "../reducers/notificationReducer";
 
-const AnecdoteForm = () => {
+const AnecdoteForm = (props) => {
   const [anecdote, setAnecdote] = useState("");
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   return (
     <div>
@@ -26,8 +24,11 @@ const AnecdoteForm = () => {
           onClick={async (e) => {
             e.preventDefault();
 
-            dispatch(createAnecdote(anecdote));
-            dispatch(setNotification(`You created '${anecdote}'`, 5));
+            props.createAnecdote(anecdote);
+            setAnecdote("");
+            props.setNotification(`You created '${anecdote}'`, 5);
+            // dispatch(createAnecdote(anecdote));
+            // dispatch(setNotification(`You created '${anecdote}'`, 5));
           }}
         >
           create
@@ -37,4 +38,8 @@ const AnecdoteForm = () => {
   );
 };
 
-export default AnecdoteForm;
+const ConnectedAnecdoteForm = connect(null, {
+  createAnecdote,
+  setNotification,
+})(AnecdoteForm);
+export default ConnectedAnecdoteForm;
